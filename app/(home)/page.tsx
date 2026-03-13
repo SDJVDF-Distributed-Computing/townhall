@@ -1,5 +1,5 @@
 "use client"
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/src/shared/components/sidebar/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { MessageFeed } from "@/src/message/components/message-feed"
 import { NewChatForm } from "@/src/message/form/new-chat.form"
