@@ -26,7 +26,7 @@ function splitIntoSubgroups(messages: Message[]): Message[][] {
 }
 
 export default function MessageGroup({ messages }: MessageGroupProps) {
-  const { data: user } = useUser(messages[0].user_id)
+  const { user } = useUser(messages[0].user_id)
   const { user: currentUser } = useCurrentUser()
   const isMe = user?.id === currentUser?.id
   const subgroups = splitIntoSubgroups(messages)

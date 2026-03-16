@@ -4,9 +4,7 @@ import MessageGroup from "@/src/message/components/message-group"
 import { ONE_MINUTE } from "@/src/shared/constants/time"
 
 export function MessageFeed() {
-  const { data } = useMessages()
-
-  const groups = data?.flatMap((page) => page.data) ?? []
+  const { data: groups = [] } = useMessages()
 
   return (
     <div className="flex flex-col gap-3 p-6">

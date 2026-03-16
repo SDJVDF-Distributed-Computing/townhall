@@ -1,10 +1,10 @@
 import useSWR from "swr"
 import { User } from "@/src/identity/schemas/user.schema"
-import { identityService } from "@/src/identity/services/identity.service"
+import { getCurrentUser } from "@/src/identity/services/identity.mock.service"
 
 export function useCurrentUser() {
   const { data, isLoading, error } = useSWR<User>(`users:me`, () =>
-    identityService.getCurrentUser()
+    getCurrentUser()
   )
   return { user: data, isLoading, error }
 }
