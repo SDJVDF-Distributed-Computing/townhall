@@ -3,6 +3,7 @@ import { Geist_Mono, Noto_Sans } from "next/font/google"
 import "@/app/global.css"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/sonner"
 
 const notoSans = Noto_Sans({ variable: "--font-sans" })
 
@@ -28,7 +29,8 @@ export default function RootLayout({
       )}
     >
       <body>
-          <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+        <Toaster />
       </body>
     </html>
   )
