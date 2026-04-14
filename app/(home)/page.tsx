@@ -1,4 +1,6 @@
 "use client"
+
+import { useSessionGuard } from "@/src/session/hooks/use-session-guard"
 import { AppSidebar } from "@/src/shared/components/sidebar/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { MessageFeed } from "@/src/message/components/message-feed"
@@ -6,6 +8,16 @@ import { NewChatForm } from "@/src/message/form/new-chat.form"
 import { Header } from "@/src/shared/components/header/header"
 
 export default function Page() {
+  const { session, isLoading } = useSessionGuard("require-authenticated")
+
+  if (isLoading || !session?.isAuthenticated) {
+    return (
+      <div className="flex min-h-svh items-center justify-center">
+        <span className="text-sm text-muted-foreground">Loading…</span>
+      </div>
+    )
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />

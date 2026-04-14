@@ -4,22 +4,35 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { useActiveUsers } from "@/src/identity/hooks/use-active-users"
-import { UserCard } from "@/src/shared/components/sidebar/user-card"
+import { useSession } from "@/src/session/hooks/use-session"
 
-export function UsersList() {
-  const { users, isLoading } = useActiveUsers()
+export function SessionInfo() {
+  const { session, isLoading } = useSession()
 
-  if (isLoading) return null
+  if (isLoading || !session) return null
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Users</SidebarGroupLabel>
+      <SidebarGroupLabel>Session</SidebarGroupLabel>
       <SidebarMenu>
-        {users?.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))}
+        <SidebarMenuItem>
+          <div className="flex flex-col gap-1 px-2 py-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <span
+                className={`h-2 w-2 rounded-full ${session.isConnected ? "bg-green-500" : "bg-destructive"}`}
+              />
+              <span>{session.isConnected ? "Connected" : "Disconnected"}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span
+                className={`h-2 w-2 rounded-full ${session.isAuthenticated ? "bg-green-500" : "bg-yellow-500"}`}
+              />
+              <span>{session.isAuthenticated ? "Authenticated" : "Not authenticated"}</span>
+            </div>
+          </div>
+        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   )

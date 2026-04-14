@@ -1,16 +1,10 @@
 import * as z from "zod"
-import { messageSchema } from "@/src/message/types/message.type"
 
 export const newMessageSchema = z.object({
-  text: z
+  content: z
     .string()
     .min(1, "Message cannot be empty")
-    .max(280, "Message cannot exceed 280 characters"),
-})
-
-export const newMessageResponseSchema = z.object({
-  message: messageSchema,
+    .max(1000, "Message cannot exceed 1000 characters"),
 })
 
 export type NewMessagePayload = z.infer<typeof newMessageSchema>
-export type NewMessageResponse = z.infer<typeof newMessageResponseSchema>

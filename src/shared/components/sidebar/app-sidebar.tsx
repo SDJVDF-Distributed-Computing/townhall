@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-
-import { UsersList } from "@/src/shared/components/sidebar/users-list"
+import { SessionInfo } from "@/src/shared/components/sidebar/users-list"
 import { Header } from "@/src/shared/components/sidebar/header"
 import {
   Sidebar,
@@ -20,10 +19,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Header />
       </SidebarHeader>
       <SidebarContent>
-        <UsersList/>
+        <SessionInfo />
       </SidebarContent>
       <SidebarFooter>
-        <Footer/>
+        <Footer />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

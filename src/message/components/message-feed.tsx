@@ -1,29 +1,37 @@
+"use client"
+
+import { useRef, useEffect } from "react"
 import { useMessages } from "@/src/message/hooks/use-messages"
-import TimestampDivider from "@/src/message/components/timestamp-divider"
-import MessageGroup from "@/src/message/components/message-group"
-import { ONE_MINUTE } from "@/src/shared/constants/time"
+import MessageBlock from "@/src/message/components/message-block"
 
 export function MessageFeed() {
-  const { data: groups = [] } = useMessages()
+  const { messages, isLoading, mutate } = useMessages()
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   return (
-    <div className="flex flex-col gap-3 p-6">
-      {groups.map((group, i) => {
-        const prevGroup = groups[i - 1]
-        const lastPrevTimestamp =
-          prevGroup?.messages[prevGroup.messages.length - 1].timestamp
-        const showDivider =
-          !prevGroup || group.first_timestamp - lastPrevTimestamp > ONE_MINUTE
-
-        return (
-          <div key={`${group.user_id}-${group.first_timestamp}`}>
-            {showDivider && (
-              <TimestampDivider timestamp={group.first_timestamp} />
-            )}
-            <MessageGroup messages={group.messages} />
-          </div>
-        )
-      })}
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-end border-b px-6 py-2">
+        <button
+          onClick={() => mutate()}
+          disabled={isLoading}
+          className="text-xs text-muted-foreground underline-offset-2 hover:underline disabled:opacity-50"
+        >
+          {isLoading ? "Fetching…" : "Fetch from server"}
+        </button>
+      </div>
+      <div className="flex flex-1 flex-col gap-1 overflow-y-auto p-6">
+        {!isLoading && messages.length === 0 && (
+          <p className="text-center text-sm text-muted-foreground">No messages yet.</p>
+        )}
+        {messages.map((msg) => (
+          <MessageBlock key={msg.id} message={msg} />
+        ))}
+        <div ref={bottomRef} />
+      </div>
     </div>
   )
 }

@@ -1,3 +1,5 @@
+"use client"
+
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -21,7 +23,7 @@ export function NewChatForm() {
 
   const form = useForm<NewMessagePayload>({
     resolver: zodResolver(newMessageSchema),
-    defaultValues: { text: "" },
+    defaultValues: { content: "" },
   })
 
   async function onSubmit(data: NewMessagePayload) {
@@ -32,13 +34,13 @@ export function NewChatForm() {
       if (e instanceof ApiError) {
         switch (e.status) {
           case 401:
-            toast.error("Not Authenticated", {
-              description: "You are not signed in.",
+            toast.error("Not authenticated", {
+              description: "Your session has expired. Please reconnect.",
             })
             break
-          case 400:
-            toast.error("Invalid Message", {
-              description: "Message is empty or exceeds 280 characters.",
+          case 422:
+            toast.error("Invalid message", {
+              description: "Message content is invalid.",
             })
             break
           default:
@@ -48,9 +50,7 @@ export function NewChatForm() {
         }
         return
       }
-      toast.error("Something went wrong", {
-        description: "Please try again later.",
-      })
+      toast.error("Something went wrong", { description: "Please try again later." })
     }
   }
 
@@ -60,7 +60,7 @@ export function NewChatForm() {
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name="text"
+          name="content"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>

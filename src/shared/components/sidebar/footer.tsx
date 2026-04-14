@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { logoutUser } from "@/src/identity/services/identity.mock.service"
+import { sessionService } from "@/src/session/services/session.service"
 import { SignOutIcon, SpinnerGapIcon } from "@phosphor-icons/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -15,23 +15,21 @@ import { useState } from "react"
 
 export function Footer() {
   const router = useRouter()
-
   const { open } = useSidebar()
   const [isLoading, setIsLoading] = useState(false)
 
-  async function onLogout() {
+  async function onDisconnect() {
     setIsLoading(true)
     try {
-      await logoutUser()
+      await sessionService.disconnect()
       router.push("/login")
     } catch {
-      toast.error("Something went wrong", {
-        description: "Please try again later.",
-      })
+      toast.error("Something went wrong", { description: "Please try again later." })
     } finally {
       setIsLoading(false)
     }
   }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -39,7 +37,7 @@ export function Footer() {
           <Button
             size={open ? "lg" : "icon"}
             variant="default"
-            onClick={onLogout}
+            onClick={onDisconnect}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -48,7 +46,7 @@ export function Footer() {
               <SignOutIcon />
             )}
             <span className={open ? "not-sr-only" : "sr-only"}>
-              {isLoading ? "Logging out..." : "Logout"}
+              {isLoading ? "Disconnecting…" : "Disconnect"}
             </span>
           </Button>
         </SidebarMenuButton>

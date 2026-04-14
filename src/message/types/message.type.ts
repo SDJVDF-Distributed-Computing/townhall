@@ -1,10 +1,9 @@
-import z from "zod";
+import z from "zod"
 
 export const messageSchema = z.object({
-  id: z.number(),
-  user_id: z.number(),
-  text: z.string(),
-  timestamp: z.number(),
-});
+  id: z.string().uuid(),
+  content: z.string(),
+  receivedAt: z.string().datetime(),
+})
 
-export type Message = z.infer<typeof messageSchema>;
+export type Message = z.infer<typeof messageSchema>
