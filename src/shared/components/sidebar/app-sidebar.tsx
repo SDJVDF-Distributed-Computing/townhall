@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SessionInfo } from "@/src/shared/components/sidebar/users-list"
+import { SessionInfo } from "@/src/shared/components/sidebar/session-info"
 import { Header } from "@/src/shared/components/sidebar/header"
 import {
   Sidebar,
