@@ -1,0 +1,39 @@
+services:
+  backend:
+    image: ghcr.io/sdjvdf-distributed-computing/backend:main
+    platform: linux/amd64
+    ports:
+      - "1234:5000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      Smp__CertPath: certs/smp_keystore.cer
+      Cors__AllowedOrigins__0: http://localhost:3000
+      Cors__AllowedOrigins__1: http://127.0.0.1:3000
+    volumes:
+      - smp-certs:/app/certs:ro
+    depends_on:
+      smp-server:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:5000/health || exit 1" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  smp-server:
+    image: ghcr.io/sdjvdf-distributed-computing/echo-server:main
+    platform: linux/amd64
+    volumes:
+      - smp-certs:/app/certs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat /dev/null > /dev/tcp/localhost/8443' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  smp-certs:
