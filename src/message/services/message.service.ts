@@ -3,8 +3,7 @@ import { NewMessagePayload } from "@/src/message/schema/new-message.schema"
 import { Message, messageSchema } from "@/src/message/types/message.type"
 import z from "zod"
 
-const BASE_URL =
-    (process.env.BACKEND_URL ?? "http://localhost:5000")
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:5000"
 
 class MessageService {
   async sendMessage(data: NewMessagePayload): Promise<void> {
